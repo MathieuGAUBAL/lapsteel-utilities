@@ -383,24 +383,52 @@ ajoutModeBouton.addEventListener('click', () => {
 
   nomAjoutMode = document.getElementById('nom-ajout-mode').value.trim();
   intervalAjoutMode = document.getElementById('input-interval-mode-added').value.toUpperCase();
+  let sameName = false;
 
   if(nomAjoutMode != "" && intervalAjoutMode != ""){
     if(hasDataInLocalStorage().length > 0){
-      data.localStorageArray = JSON.parse(window.localStorage.getItem('objetAjoutMode'));
-      data.localStorageArray.push({[`${nomAjoutMode}`]:intervalAjoutMode});
-      window.localStorage.setItem('objetAjoutMode', JSON.stringify([...data.localStorageArray]));
+      for(let i = 0; i < data.localStorageArray.length; i++){
+        if(data.localStorageArray[i].hasOwnProperty(nomAjoutMode)){
+          for(let j in data.localStorageArray){
+            if(j == i){
+              sameName = true;
+            }
+          }
+        }
+      }
+
+      if(!sameName){
+        data.localStorageArray = JSON.parse(window.localStorage.getItem('objetAjoutMode'));
+        data.localStorageArray.push({[`${nomAjoutMode}`]:intervalAjoutMode});
+        window.localStorage.setItem('objetAjoutMode', JSON.stringify([...data.localStorageArray]));
+
+        $('.alert-modeAjout-mode').show();
+        setTimeout( () => {
+          $('.alert-modeAjout-mode').hide();
+        },2000);
+
+      }else{
+        $('.alert-doublon-modeAjout-mode').show();
+        setTimeout( () => {
+          $('.alert-doublon-modeAjout-mode').hide();
+        },2000); 
+      }
+      
     }else{
       data.localStorageArray.push({[`${nomAjoutMode}`]:intervalAjoutMode});
       window.localStorage.setItem('objetAjoutMode', JSON.stringify([...data.localStorageArray]));
-    }
 
-   $('.alert-modeAjout-mode').show();
-    setTimeout( () => {
-      $('.alert-modeAjout-mode').hide();
-    },2000); 
+      $('.alert-modeAjout-mode').show();
+      setTimeout( () => {
+        $('.alert-modeAjout-mode').hide();
+      },2000);
+    }
 
   }else{
     $('.alert-ajout-mode').show();
+    setTimeout( () => {
+      $('.alert-ajout-mode').hide();
+    },2000); 
   }
 
 })    
@@ -441,9 +469,6 @@ supprimerModeBouton.addEventListener('click', () => {
     },2000); 
 
   }
- 
-
-
 })
 
 //Modification d'un mode en ouvrant une MODAL
@@ -476,6 +501,7 @@ modifierModeBouton.addEventListener('click', () => {
 })
 
 // Selection du mode a modifier
+// sert a afficher le mode selectionner, il apparaitra l'objet en cours
 selectionModifierModeBouton.addEventListener('click', () => {
   if(data.localStorageArray.length > 0){
  
