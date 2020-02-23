@@ -475,14 +475,19 @@ supprimerModeBouton.addEventListener('click', () => {
 //Modification d'un mode en ouvrant une MODAL
 modifierModeBouton.addEventListener('click', () => {
 
+  // array qui servira a accueillir le local storage
   let localStorageArray = [];
   let sameName = false;
+
   nomModificationMode = document.getElementById('nom-modification-mode').value.trim();
   intervalModificationMode = document.getElementById('interval-modification-mode').value.toUpperCase();
 
   let modeSelection = document.getElementById('interval-mode-list-modification');
   let modeSelectionIndex = modeSelection.options[modeSelection.selectedIndex];
   
+ 
+  //boucle qui servira a savoir s'il exite des doublons avec nomModificationMode et le data.localStorageArray
+  //si true alors pas de modification du nom
   for(let i = 0; i < data.localStorageArray.length; i++){
     if(data.localStorageArray[i].hasOwnProperty(nomModificationMode)){
       for(let j in data.localStorageArray){
@@ -494,25 +499,33 @@ modifierModeBouton.addEventListener('click', () => {
   }
 
   if(!sameName){
-    for(let i = 0; i < data.localStorageArray.length; i++){
-      if(data.localStorageArray[i].hasOwnProperty(modeSelectionIndex.text)){
-        data.localStorageArray[i][modeSelectionIndex.text] = intervalModificationMode;
-        str = JSON.stringify(data.localStorageArray[i]);
-        str = str.replace(modeSelectionIndex.text, nomModificationMode);
-        parsed = JSON.parse(str);
-        localStorageArray.push(parsed);
-      }else{
-        localStorageArray.push(data.localStorageArray[i]);
+    if(modeSelection.length > 0 && nomModificationMode != "" && intervalModificationMode != ""){
+      for(let i = 0; i < data.localStorageArray.length; i++){
+        if(data.localStorageArray[i].hasOwnProperty(modeSelectionIndex.text)){
+          data.localStorageArray[i][modeSelectionIndex.text] = intervalModificationMode;
+          str = JSON.stringify(data.localStorageArray[i]);
+          str = str.replace(modeSelectionIndex.text, nomModificationMode);
+          parsed = JSON.parse(str);
+          localStorageArray.push(parsed);
+        }else{
+          localStorageArray.push(data.localStorageArray[i]);
+        }
       }
+  
+      data.localStorageArray = localStorageArray;
+      window.localStorage.setItem('objetAjoutMode', JSON.stringify([...localStorageArray]));
+  
+      $('.alert-rename-modeAjout-mode').show();
+      setTimeout( () => {
+        $('.alert-rename-modeAjout-mode').hide();
+      },2000);
+
+    }else{
+      $('.alert-error-rename-modeAjout-mode').show();
+      setTimeout( () => {
+        $('.alert-error-rename-modeAjout-mode').hide();
+      },2000);
     }
-
-    data.localStorageArray = localStorageArray;
-    window.localStorage.setItem('objetAjoutMode', JSON.stringify([...localStorageArray]));
-
-    $('.alert-rename-modeAjout-mode').show();
-    setTimeout( () => {
-      $('.alert-rename-modeAjout-mode').hide();
-    },2000);
 
   }else{
     $('.alert-doublon-modeAjout-mode').show();
