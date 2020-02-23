@@ -383,6 +383,7 @@ ajoutModeBouton.addEventListener('click', () => {
 
   nomAjoutMode = document.getElementById('nom-ajout-mode').value.trim();
   intervalAjoutMode = document.getElementById('input-interval-mode-added').value.toUpperCase();
+
   let sameName = false;
 
   if(nomAjoutMode != "" && intervalAjoutMode != ""){
@@ -475,27 +476,50 @@ supprimerModeBouton.addEventListener('click', () => {
 modifierModeBouton.addEventListener('click', () => {
 
   let localStorageArray = [];
-
+  let sameName = false;
   nomModificationMode = document.getElementById('nom-modification-mode').value.trim();
   intervalModificationMode = document.getElementById('interval-modification-mode').value.toUpperCase();
 
   let modeSelection = document.getElementById('interval-mode-list-modification');
   let modeSelectionIndex = modeSelection.options[modeSelection.selectedIndex];
   
-  
   for(let i = 0; i < data.localStorageArray.length; i++){
-    if(data.localStorageArray[i].hasOwnProperty(modeSelectionIndex.text)){
-      data.localStorageArray[i][modeSelectionIndex.text] = intervalModificationMode;
-      str = JSON.stringify(data.localStorageArray[i]);
-      str = str.replace(modeSelectionIndex.text, nomModificationMode);
-      parsed = JSON.parse(str);
-      localStorageArray.push(parsed);
-    }else{
-      localStorageArray.push(data.localStorageArray[i]);
+    if(data.localStorageArray[i].hasOwnProperty(nomModificationMode)){
+      for(let j in data.localStorageArray){
+        if(j == i){
+          sameName = true;
+        }
+      }
     }
   }
-  data.localStorageArray = localStorageArray;
-  window.localStorage.setItem('objetAjoutMode', JSON.stringify([...localStorageArray]));
+
+  if(!sameName){
+    for(let i = 0; i < data.localStorageArray.length; i++){
+      if(data.localStorageArray[i].hasOwnProperty(modeSelectionIndex.text)){
+        data.localStorageArray[i][modeSelectionIndex.text] = intervalModificationMode;
+        str = JSON.stringify(data.localStorageArray[i]);
+        str = str.replace(modeSelectionIndex.text, nomModificationMode);
+        parsed = JSON.parse(str);
+        localStorageArray.push(parsed);
+      }else{
+        localStorageArray.push(data.localStorageArray[i]);
+      }
+    }
+
+    data.localStorageArray = localStorageArray;
+    window.localStorage.setItem('objetAjoutMode', JSON.stringify([...localStorageArray]));
+
+    $('.alert-rename-modeAjout-mode').show();
+    setTimeout( () => {
+      $('.alert-rename-modeAjout-mode').hide();
+    },2000);
+
+  }else{
+    $('.alert-doublon-modeAjout-mode').show();
+    setTimeout( () => {
+      $('.alert-doublon-modeAjout-mode').hide();
+    },2000);
+  }
 
   
 })

@@ -96,7 +96,7 @@
 				  <input name="input-interval-mode-added" id="input-interval-mode-added" type='text' required='required'
 					class="form-control" />
 				  <div class="pt-3 pb-3">
-					<button type="button" class="btn btn-secondary" id="ajouter-mode">Ajouter un mode</button>
+					<button type="button" class="btn btn-primary" id="ajouter-mode">Ajouter un mode</button>
 				  </div>
 				</form>
         </div>
@@ -164,13 +164,14 @@
 
         <!-- Header -->
         <div class="modal-header">
-        <h5 class="modal-title">Modifier un mode</h5>
+        <h4 class="modal-title">Modifier un mode</h4>
         <button class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Body -->
         <div class="modal-body">
         <form id='form-id-modifier-mode text-center form-group'>
+          <label class="h5">Choisir le mode à modifier</label>
           <SELECT id="interval-mode-list-modification" name="interval-mode-list-modification" size="1" class="form-control"></SELECT>
           <div class="pt-3 pb-1">
             <button type="button" class="btn btn-primary" id="selection-modifier-mode">Visualiser le mode</button>
@@ -180,9 +181,9 @@
             <div id="resultat-mode-selection" class="h2"></div>
 
             <div class="pt-3 pb-3">
-              <label>nom du mode</label>
+              <label class="h5">nom du mode</label>
               <input name="nom-modification-mode" id="nom-modification-mode" type='text' required='required' class="form-control"/>
-              <label>interval du mode</label>
+              <label class="h5 pt-2">interval du mode</label>
               <input name="interval-modification-mode" id="interval-modification-mode" type='text' required='required' class="form-control"/>
             </div>
 
@@ -190,6 +191,14 @@
             
           </div>
         </form>
+        </div>
+
+        <div class="alert alert-warning fade show container alert-doublon-modeAjout-mode" role="alert">
+          <strong>OOPS!</strong> Enresgitrement déjà existant.
+        </div>
+
+        <div class="alert alert-warning fade show container alert-rename-modeAjout-mode" role="alert">
+          <strong>Bravo!</strong> Modification effectuée.
         </div>
 
         <!-- Footer -->
