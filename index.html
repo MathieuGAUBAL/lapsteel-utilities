@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/7952737f0d.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="text-center p-4 bg-dark text-white">LAPSTEEL UTILITIES</h1>
+
+  <!-- input pour renseigner l'accordage -->
+    <div class="div-accordage text-center container pt-5">
+        <div class="form-group">
+        <!-- div error si l'utilisateur ne rentre pas d'accordage -->
+        <div class="alert alert-warning alert-dismissible fade show container" role="alert">
+          <strong>OOPS!</strong> Vous avez oublié de saisir un accordage.
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+            <div class="input-group-text">Accordage</div>
+            </div>
+              <input id="input-accordage" type="text" size="10" class="form-control" placeholder="exemple : EADGBE" />
+            </div>
+        </div>
+    </div>
+
+    <div class="div-tonique text-center container input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="input-tonique-tonique">Tonique</label>
+        </div>
+        <SELECT id="input-tonique-tonique" name="nom" size="1" class="form-control">
+          <OPTION>C</OPTION>
+          <OPTION>C#</OPTION>
+          <OPTION>D</OPTION>
+          <OPTION>D#</OPTION>
+          <OPTION>E</OPTION>
+          <OPTION>F</OPTION>
+          <OPTION>F#</OPTION>
+          <OPTION>G</OPTION>
+          <OPTION>G#</OPTION>
+          <OPTION>A</OPTION>
+          <OPTION>A#</OPTION>
+          <OPTION>B</OPTION>
+		</SELECT>
+
+	</div>
+
+	 <!-- Menu déroulant pour sélectionner le mode -->
+	 <div class="div-mode text-center container input-group mt-3">
+     <div class="input-group-prepend">
+        <label class="input-group-text" for="input-interval-mode">Mode</label>
+     </div>
+     
+		<SELECT id="input-interval-mode" name="nom" size="1" class="form-control">
+		  <OPTION value="1.5T 1T 1T 1.5T 1T">Pentatonique mineure</OPTION>
+		  <OPTION value="1T 1T 1.5T 1T 1.5T">Pentatonique majeure</OPTION>
+    </SELECT>
+    
+		<div class="container pb-3 pt-3">
+      <button class="btn btn-outline-primary" data-toggle="modal" data-target="#ajoutMode"><i class="fas fa-plus"></i> </button>
+      <button class="btn btn-outline-primary" data-toggle="modal" data-target="#suppressionMode"> <i class="fas fa-minus"></i> </button>
+      <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modifierMode"> <i class="fas fa-edit"></i> </button>
+    </div>
+  </div>
+	
+		<!-- debut Modal Ajout Mode -->
+		<div class="modal" id="ajoutMode">
+		  <div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+
+
+			  <!-- Header -->
+			  <div class="modal-header">
+				<h5 class="modal-title">Ajouter un mode</h5>
+				<button class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+			  <!-- Body -->
+			  <div class="modal-body">
+        <!-- div error si l'utilisateur ne rentre pas d'accordage -->
+        <div class="alert alert-warning alert-dismissible fade show container alert-ajout-mode" role="alert">
+          <strong>OOPS!</strong> Il faut saisir les deux champs.
+        </div>
+
+				<form id='form-id-ajout-mode text-center form-group'>
+				  <label>Nom du mode</label>
+				  <input name="nom-ajout-mode" id="nom-ajout-mode" type='text' required='required'
+					class="form-control" />
+				  <label>intervalle des notes</label>
+				  <input name="input-interval-mode-added" id="input-interval-mode-added" type='text' required='required'
+					class="form-control" />
+				  <div class="pt-3 pb-3">
+					<button type="button" class="btn btn-secondary" id="ajouter-mode">Ajouter un mode</button>
+				  </div>
+				</form>
+        </div>
+
+        <div class="alert alert-warning alert-dismissible fade show container alert-modeAjout-mode" role="alert">
+          <strong>Bravo!</strong> Un mode a été ajouté.
+        </div>
+
+			  <!-- Footer -->
+			  <div class="modal-footer">
+				<button class="btn btn-secondary" data-dismiss="modal" onclick="reload()">Fermer</button>
+			  </div>
+			</div>
+		  </div>
+    </div>
+      <!-- fin Modal Ajout Mode -->
+      
+    <!-- debut Modal supprimer Mode -->
+    <div class="modal" id="suppressionMode">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+        <h5 class="modal-title">Supprimer un mode</h5>
+        <button class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+        <form id='form-id-suppression-mode text-center form-group'>
+          <SELECT id="interval-mode-list" name="interval-mode-list" size="1" class="form-control"></SELECT>
+          <div class="pt-3 pb-3">
+          <button type="button" class="btn btn-primary" id="supprimer-mode" onclick="reload()">Supprimer un mode</button>
+          </div>
+        </form>
+        </div>
+
+        <div class="alert alert-warning alert-dismissible fade show container alert-suppression-mode" role="alert">
+          <strong>Alerte!</strong> Le mode a été supprimé.
+        </div>
+
+        <div class="alert alert-warning alert-dismissible fade show container alert-error-suppression-mode" role="alert">
+          <strong>Alerte!</strong> Rien à supprimer.
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+       <!-- <button class="btn btn-secondary" data-dismiss="modal" onclick="reload()">Fermer</button>-->
+        </div>
+      </div>
+      </div>
+    </div>
+      <!-- fin Modal supprimer Mode -->
+
+
+    <!-- debut Modal modifier Mode -->
+    <div class="modal" id="modifierMode">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+        <h5 class="modal-title">Modifier un mode</h5>
+        <button class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+        <form id='form-id-modifier-mode text-center form-group'>
+          <SELECT id="interval-mode-list-modification" name="interval-mode-list-modification" size="1" class="form-control"></SELECT>
+          <div class="pt-3 pb-1">
+            <button type="button" class="btn btn-primary" id="selection-modifier-mode">Visualiser le mode</button>
+          </div>
+       
+          <div class="pt-3 pb-3">
+            <div id="resultat-mode-selection" class="h2"></div>
+
+            <div class="pt-3 pb-3">
+              <label>nom du mode</label>
+              <input name="nom-modification-mode" id="nom-modification-mode" type='text' required='required' class="form-control"/>
+              <label>interval du mode</label>
+              <input name="interval-modification-mode" id="interval-modification-mode" type='text' required='required' class="form-control"/>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="modifier-mode">Modifier</button>
+            
+          </div>
+        </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal" onclick="reload()">Fermer</button>
+        </div>
+      </div>
+      </div>
+    </div>
+      <!-- fin Modal modifier Mode -->
+
+  <div class="container text-center mb-5">
+    <div id="display-mode" class="text-center p-5 h2 display-mode-class"></div>
+    <canvas id="canvas"></canvas>
+  </div>  
+
+    <!-- Bouton Lancer et Effacer -->
+  <div class="text-center container mt-3 pb-5">
+      <button type="button" class="btn btn-primary" id="button-lancer" onclick="lancer()">Lancer</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="main2.js"></script>
+  
+</body>
+</html>
