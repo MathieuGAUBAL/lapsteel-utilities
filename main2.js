@@ -439,6 +439,7 @@ ajoutModeBouton.addEventListener('click', () => {
 supprimerModeBouton.addEventListener('click', () => {
 
   if(hasDataInLocalStorage().length > 0){
+  
     let modeSelection = document.getElementById('interval-mode-list');
     let modeSelectionIndex = modeSelection.options[modeSelection.selectedIndex];
   
@@ -454,16 +455,17 @@ supprimerModeBouton.addEventListener('click', () => {
     }
   
     data.localStorageArray = newObj;
-    
-    window.localStorage.setItem('objetAjoutMode', JSON.stringify([...newObj]));
 
+    window.localStorage.setItem('objetAjoutMode', JSON.stringify([...data.localStorageArray]));
+
+    //message : Le mode a été supprimé.
     $('.alert-suppression-mode').show();
     setTimeout( () => {
       $('.alert-suppression-mode').hide();
     },2000);  
 
   }else{
-
+    //message d'erreur : rien à supprimer.
     $('.alert-error-suppression-mode').show();
     setTimeout( () => {
       $('.alert-error-suppression-mode').hide();
