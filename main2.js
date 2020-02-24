@@ -150,7 +150,8 @@ let data = {
     modeNum:[],
     gammeMode : [],
     notesFinales:[],
-    localStorageArray:[]
+    localStorageArray:[],
+    isLapteel:JSON.parse(window.localStorage.getItem('isLapsteel')),
 }
 
 
@@ -442,7 +443,7 @@ supprimerModeBouton.addEventListener('click', () => {
   
     let modeSelection = document.getElementById('interval-mode-list');
     let modeSelectionIndex = modeSelection.options[modeSelection.selectedIndex];
-  
+    
     let newObj = [];
     for(let i = 0; i < data.localStorageArray.length; i++){
       if(data.localStorageArray[i].hasOwnProperty(modeSelectionIndex.text)){
@@ -453,9 +454,10 @@ supprimerModeBouton.addEventListener('click', () => {
         }
       }
     }
-  
-    data.localStorageArray = newObj;
+    
 
+    data.localStorageArray = newObj;
+    console.log(data.localStorageArray);
     window.localStorage.setItem('objetAjoutMode', JSON.stringify([...data.localStorageArray]));
 
     //message : Le mode a été supprimé.
@@ -574,6 +576,7 @@ function hasDataInLocalStorage(){
   return count;
 }
 
+window.localStorage.setItem('isLapsteel', JSON.stringify(data.isLapteel));
 
 if(hasDataInLocalStorage().length > 0){
   let name="";
@@ -593,16 +596,29 @@ if(hasDataInLocalStorage().length > 0){
 }
 
 
+function Guitar_fret(){
+  window.localStorage.setItem('isLapsteel', JSON.stringify(false));
+  reload();
+}
+
+function Lapsteel_fret(){
+  window.localStorage.setItem('isLapsteel', JSON.stringify(true));
+
+  reload();
+}
 
 
 // cordes en y           1  2   3   4   5   6              
 let alignement_note_y = [38,68,100,130,161,194];
+
 // numeros case note     1    2   3   4   5   6   7   8   9   10  11  12  13   14   15    16   17   18   19    20    
 let alignement_note_x = [100,177,252,330,407,485,560,635,713,789,865,940, 1015, 1092,1164,1240,1316,1395, 1468,1544];
-
+let alignement_note_x_guitar = 35;
 let alignement_frette_y = 0;
 //                          3   5   7   9   12  15   17   19   21
 let alignement_frette_x = [255,405,560,710,935,1165,1318,1470,1610];
+let alignement_frette_x_guitar = 35;
+
 let arr_num_frette = [num_fret_3,num_fret_5,num_fret_7,num_fret_9,
                       num_fret_12,num_fret_15,num_fret_17,num_fret_19,
                       num_fret_21];
@@ -630,15 +646,14 @@ function init(){
 
     //affiche les images frettes
     for(let j = 0; j < alignement_frette_x.length; j++){
-      context.drawImage(arr_num_frette[j],alignement_frette_x[j], alignement_frette_y);
+      context.drawImage(arr_num_frette[j], data.isLapteel ? alignement_frette_x[j] : alignement_frette_x[j] - alignement_frette_x_guitar, alignement_frette_y);
     }
-
 
     //affiche les notes 
     for(let i = 0; i < 21; i++){
       for(let j = 0; j < alignement_note_y.length; j++){
         if(arr_note_gif[j] != undefined){
-           context.drawImage(arr_note_gif[j][i],alignement_note_x[i], alignement_note_y[j]);
+          context.drawImage(arr_note_gif[j][i], (data.isLapteel ? alignement_note_x[i] : alignement_note_x[i] + alignement_note_x_guitar), alignement_note_y[j]);
           } 
       }
   }
@@ -672,15 +687,6 @@ function init(){
       context.drawImage(b_manche,alignement_note_manche_x, alignement_note_y[i]);
     }
   }
-
-  //canvas_infos
-  //console.log(data.gammeMode);
-/*    context_infos.font ="50px Arial";
-   context_infos.fillStyle = "#282828";
-   context_infos.fillText("gamme du mode : ",10, 45);
-  for(let i = 0; i < data.gammeMode.length; i++){
-    context_infos.fillText(data.gammeMode[i],alignement_mode_x[i]+350, 45);
-  }   */
 }
 
 init();
